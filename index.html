@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlaZn_TV | Content Creator & Streamer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Orbitron', 'sans-serif'],
+                        'body': ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        'cyan': {
+                            400: '#00d9ff',
+                            500: '#00b8d4',
+                            600: '#0097a7',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow-pulse': 'glowPulse 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glowPulse: {
+                            '0%': { filter: 'drop-shadow(0 0 20px rgba(0, 217, 255, 0.5))' },
+                            '100%': { filter: 'drop-shadow(0 0 40px rgba(0, 217, 255, 0.8))' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #000000;
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #00d9ff 0%, #00b8d4 50%, #0097a7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .cyan-glow {
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.6), 0 0 60px rgba(0, 184, 212, 0.3);
+        }
+        
+        .logo-glow {
+            filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.6));
+            transition: all 0.3s ease;
+        }
+        
+        .logo-glow:hover {
+            filter: drop-shadow(0 0 40px rgba(0, 217, 255, 0.9));
+            transform: scale(1.05);
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-panel-cyan {
+            background: rgba(0, 217, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+        }
+        
+        .stream-card {
+            transition: all 0.3s ease;
+        }
+        
+        .stream-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 217, 255, 0.3);
+            border-color: rgba(0, 217, 255, 0.5);
+        }
+        
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .live-indicator {
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: rotate(360deg) scale(1.2);
+            color: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+        
+        .btn-cyan {
+            background: linear-gradient(135deg, #00d9ff 0%, #00b8d4 100%);
+            position: relative;
+            overflow: hidden;
+            color: #000;
+        }
+        
+        .btn-cyan::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn-cyan:hover::before {
+            left: 100%;
+        }
+        
+        .border-cyan-glow {
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            box-shadow: inset 0 0 20px rgba(0, 217, 255, 0.1);
+        }
+        
+        .text-shadow-cyan {
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+        }
+        
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(0, 217, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .nav-logo {
+            height: 45px;
+            width: auto;
+            filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.5));
+            transition: all 0.3s ease;
+        }
+        
+        .nav-logo:hover {
+            filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.8));
+            transform: scale(1.1);
+        }
+        
+        .hero-logo-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-logo {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            position: relative;
+            z-index: 10;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-logo {
+                width: 280px;
+                height: 280px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .hero-logo {
+                width: 350px;
+                height: 350px;
+            }
+        }
+        
+        /* Fallback for missing images */
+        .logo-fallback {
+            background: linear-gradient(135deg, #00d9ff 0%, #00b8d4 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            color: #000;
+            font-size: 4rem;
+        }
+    </style>
+</head>
+<body class="font-body text-white antialiased grid-bg">
+
+    <!-- Particle Background -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3">
+                    <img src="20260324_043548.png" alt="BlaZn_TV Logo" class="nav-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="logo-fallback w-10 h-10 hidden">B</div>
+                    <span class="font-display font-bold text-2xl tracking-wider text-white hidden sm:block">BLAZN<span class="text-cyan-400">_TV</span></span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="hover:text-cyan-400 transition-colors font-medium tracking-wide">HOME</a>
+                    <a href="#schedule" class="hover:text-cyan-400 transition-colors font-medium tracking-wide">SCHEDULE</a>
+                    <a href="#content" class="hover:text-cyan-400 transition-colors font-medium tracking-wide">CONTENT</a>
+                    <a href="#community" class="hover:text-cyan-400 transition-colors font-medium tracking-wide">COMMUNITY</a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div id="live-status" class="hidden items-center space-x-2 px-4 py-2 rounded-full bg-cyan-500/20 border border-cyan-400/50">
+                        <div class="w-2 h-2 bg-cyan-400 rounded-full live-indicator"></div>
+                        <span class="text-cyan-400 font-bold text-sm tracking-wider">LIVE</span>
+                    </div>
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-2xl hover:text-cyan-400 transition-colors">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/10">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" class="block py-3 hover:text-cyan-400">HOME</a>
+                <a href="#schedule" class="block py-3 hover:text-cyan-400">SCHEDULE</a>
+                <a href="#content" class="block py-3 hover:text-cyan-400">CONTENT</a>
+                <a href="#community" class="block py-3 hover:text-cyan-400">COMMUNITY</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-900/10 to-transparent"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Logo Only - No Rings -->
+            <div class="hero-logo-container animate-float">
+                <img src="20260324_043548.png" alt="BlaZn_TV Logo" class="hero-logo logo-glow animate-glow-pulse mx-auto" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'hero-logo logo-fallback mx-auto animate-glow-pulse\'>B</div>';">
+            </div>
+            
+            <h1 class="font-display font-black text-5xl md:text-7xl lg:text-8xl mb-6 tracking-tighter">
+                <span class="gradient-text text-shadow-cyan">BLAZN</span><span class="text-white">_TV</span>
+            </h1>
+            
+            <p class="text-xl md:text-3xl text-gray-300 mb-8 font-light tracking-wide max-w-3xl mx-auto">
+                Content Creator • Streamer • Community Builder
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                <a href="https://twitch.tv/blazn_tv" target="_blank" class="group relative px-8 py-4 btn-cyan rounded-full font-display font-bold text-lg transition-all transform hover:scale-105 cyan-glow overflow-hidden">
+                    <span class="relative z-10 flex items-center gap-2">
+                        <i class="fab fa-twitch"></i>
+                        WATCH LIVE
+                    </span>
+                </a>
+                
+                <button onclick="scrollToSection('schedule')" class="px-8 py-4 border-2 border-cyan-400/30 hover:border-cyan-400 rounded-full font-display font-bold text-lg transition-all hover:bg-cyan-400/10 text-cyan-400">
+                    VIEW SCHEDULE
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mt-16">
+                <div class="glass-panel-cyan p-6 rounded-2xl border-cyan-glow">
+                    <div class="text-3xl font-display font-bold text-cyan-400 counter text-shadow-cyan" data-target="375">0</div>
+                    <div class="text-gray-400 text-sm tracking-wider mt-1">FOLLOWERS</div>
+                </div>
+                <div class="glass-panel-cyan p-6 rounded-2xl border-cyan-glow">
+                    <div class="text-3xl font-display font-bold text-white counter" data-target="50">0</div>
+                    <div class="text-gray-400 text-sm tracking-wider mt-1">AVG VIEWERS</div>
+                </div>
+                <div class="glass-panel-cyan p-6 rounded-2xl border-cyan-glow">
+                    <div class="text-3xl font-display font-bold text-cyan-400 counter text-shadow-cyan" data-target="12">0</div>
+                    <div class="text-gray-400 text-sm tracking-wider mt-1">SUBS</div>
+                </div>
+                <div class="glass-panel-cyan p-6 rounded-2xl border-cyan-glow">
+                    <div class="text-3xl font-display font-bold text-white counter" data-target="100">0</div>
+                    <div class="text-gray-400 text-sm tracking-wider mt-1">STREAMS</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-2xl text-cyan-400"></i>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="py-6 bg-cyan-950/30 border-y border-cyan-500/20 overflow-hidden">
+        <div class="marquee-container">
+            <div class="marquee-content font-display text-2xl font-bold text-cyan-400/50">
+                STREAMS RETURN APRIL 1ST @ 3PM AEST • STREAMS RETURN APRIL 1ST @ 3PM AEST • STREAMS RETURN APRIL 1ST @ 3PM AEST • STREAMS RETURN APRIL 1ST @ 3PM AEST •
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section with Logo -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="relative flex justify-center">
+                    <div class="absolute inset-0 bg-cyan-500/20 blur-3xl rounded-full w-64 h-64 mx-auto"></div>
+                    <img src="20260324_043548.png" alt="BlaZn_TV Logo" class="relative w-64 h-64 md:w-80 md:h-80 logo-glow animate-glow-pulse" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'relative w-64 h-64 md:w-80 md:h-80 logo-fallback logo-glow animate-glow-pulse flex mx-auto\'>B</div>';">
+                </div>
+                <div>
+                    <h2 class="font-display font-bold text-4xl md:text-5xl mb-6 text-white">ABOUT <span class="gradient-text text-shadow-cyan">BLAZN_TV</span></h2>
+                    <p class="text-gray-300 text-lg mb-6 leading-relaxed">
+                        Welcome to the channel! I'm a passionate content creator focused on building an amazing community through gaming, chatting, and epic moments.
+                    </p>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                        Whether we're grinding ranked, trying out new games, or just hanging out in Just Chatting, there's always something exciting happening here.
+                    </p>
+                    <div class="flex gap-4">
+                        <div class="flex items-center gap-2 text-cyan-400">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Interactive Streams</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-cyan-400">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Community Events</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section id="schedule" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display font-bold text-4xl md:text-6xl mb-4 text-white">STREAM <span class="gradient-text text-shadow-cyan">SCHEDULE</span></h2>
+                <p class="text-gray-400 text-lg">Catch me live on Twitch</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Monday -->
+                <div class="glass-panel-cyan p-8 rounded-3xl border-l-4 border-cyan-400 hover:bg-cyan-900/10 transition-all group">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-display font-bold text-2xl text-white">MONDAY</h3>
+                        <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-sm font-bold border border-cyan-400/30">VARIETY</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">3:00 PM - 6:00 PM AEST</p>
+                    <div class="flex items-center gap-2 text-sm text-cyan-400">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Just Chatting & Games</span>
+                    </div>
+                </div>
+
+                <!-- Wednesday -->
+                <div class="glass-panel-cyan p-8 rounded-3xl border-l-4 border-white hover:bg-white/5 transition-all group">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-display font-bold text-2xl text-white">WEDNESDAY</h3>
+                        <span class="px-3 py-1 bg-white/10 text-white rounded-full text-sm font-bold border border-white/30">FPS</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">3:00 PM - 7:00 PM AEST</p>
+                    <div class="flex items-center gap-2 text-sm text-gray-400">
+                        <i class="fas fa-crosshairs"></i>
+                        <span>Shooters & Competitive</span>
+                    </div>
+                </div>
+
+                <!-- Friday -->
+                <div class="glass-panel-cyan p-8 rounded-3xl border-l-4 border-cyan-600 hover:bg-cyan-900/10 transition-all group">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-display font-bold text-2xl text-white">FRIDAY</h3>
+                        <span class="px-3 py-1 bg-cyan-600/20 text-cyan-300 rounded-full text-sm font-bold border border-cyan-600/30">COMMUNITY</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">3:00 PM - 8:00 PM AEST</p>
+                    <div class="flex items-center gap-2 text-sm text-cyan-400">
+                        <i class="fas fa-users"></i>
+                        <span>Community Games & Events</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <div class="inline-flex items-center gap-4 glass-panel-cyan px-8 py-4 rounded-full border-cyan-glow">
+                    <i class="fas fa-clock text-cyan-400 text-2xl"></i>
+                    <div class="text-left">
+                        <p class="text-sm text-gray-400">Current Timezone</p>
+                        <p class="font-display font-bold text-lg text-white">AEST (UTC+10)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section id="content" class="py-24 bg-black/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display font-bold text-4xl md:text-6xl mb-4 text-white">LATEST <span class="gradient-text text-shadow-cyan">CONTENT</span></h2>
+                <p class="text-gray-400 text-lg">Highlights from the stream</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- VOD Card 1 -->
+                <div class="stream-card glass-panel-cyan rounded-3xl overflow-hidden group cursor-pointer border-cyan-glow">
+                    <div class="relative aspect-video bg-gradient-to-br from-gray-900 to-black flex items-center justify-center overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                        <i class="fas fa-play-circle text-6xl text-cyan-400/20 group-hover:text-cyan-400 group-hover:scale-110 transition-all z-20"></i>
+                        <div class="absolute top-4 right-4 bg-cyan-500 text-black text-xs font-bold px-2 py-1 rounded">LATEST</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display font-bold text-xl mb-2 text-white group-hover:text-cyan-400 transition-colors">Stream Highlight #1</h3>
+                        <p class="text-gray-400 text-sm mb-4">Epic moments from last week's stream</p>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span class="text-cyan-400"><i class="far fa-clock mr-1"></i> 2:34:12</span>
+                            <span><i class="far fa-eye mr-1"></i> 1.2K views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VOD Card 2 -->
+                <div class="stream-card glass-panel-cyan rounded-3xl overflow-hidden group cursor-pointer border-cyan-glow">
+                    <div class="relative aspect-video bg-gradient-to-br from-gray-900 to-black flex items-center justify-center overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                        <i class="fas fa-play-circle text-6xl text-cyan-400/20 group-hover:text-cyan-400 group-hover:scale-110 transition-all z-20"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display font-bold text-xl mb-2 text-white group-hover:text-cyan-400 transition-colors">Community Game Night</h3>
+                        <p class="text-gray-400 text-sm mb-4">Playing with viewers and having fun</p>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span class="text-cyan-400"><i class="far fa-clock mr-1"></i> 3:45:00</span>
+                            <span><i class="far fa-eye mr-1"></i> 890 views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VOD Card 3 -->
+                <div class="stream-card glass-panel-cyan rounded-3xl overflow-hidden group cursor-pointer border-cyan-glow">
+                    <div class="relative aspect-video bg-gradient-to-br from-gray-900 to-black flex items-center justify-center overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                        <i class="fas fa-play-circle text-6xl text-cyan-400/20 group-hover:text-cyan-400 group-hover:scale-110 transition-all z-20"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display font-bold text-xl mb-2 text-white group-hover:text-cyan-400 transition-colors">Ranked Grind</h3>
+                        <p class="text-gray-400 text-sm mb-4">Climbing the competitive ladder</p>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span class="text-cyan-400"><i class="far fa-clock mr-1"></i> 4:12:30</span>
+                            <span><i class="far fa-eye mr-1"></i> 2.1K views</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="https://twitch.tv/blazn_tv/videos" target="_blank" class="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-bold transition-colors text-lg">
+                    VIEW ALL VODS <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-900/20 to-black/50"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="font-display font-bold text-4xl md:text-6xl mb-6 text-white">JOIN THE <span class="gradient-text text-shadow-cyan">COMMUNITY</span></h2>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                        Connect with fellow gamers, get notified when I go live, and be part of an awesome community. Follow me on social media to stay updated!
+                    </p>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center gap-4 glass-panel-cyan p-4 rounded-xl border-cyan-glow hover:border-cyan-400 transition-colors">
+                            <div class="w-12 h-12 bg-[#5865F2] rounded-full flex items-center justify-center text-2xl text-white">
+                                <i class="fab fa-discord"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">Discord Server</h4>
+                                <p class="text-sm text-gray-400">Chat with the community</p>
+                            </div>
+                            <button class="ml-auto px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-black rounded-lg text-sm font-bold transition-colors">JOIN</button>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 glass-panel-cyan p-4 rounded-xl border-cyan-glow hover:border-cyan-400 transition-colors">
+                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-2xl text-black">
+                                <i class="fab fa-x-twitter"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">Twitter / X</h4>
+                                <p class="text-sm text-gray-400">Updates & memes</p>
+                            </div>
+                            <button class="ml-auto px-4 py-2 bg-white hover:bg-gray-200 text-black rounded-lg text-sm font-bold transition-colors">FOLLOW</button>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <a href="#" class="social-icon w-12 h-12 glass-panel-cyan rounded-full flex items-center justify-center text-xl text-white hover:bg-cyan-500 hover:text-black border border-cyan-500/30">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon w-12 h-12 glass-panel-cyan rounded-full flex items-center justify-center text-xl text-white hover:bg-cyan-500 hover:text-black border border-cyan-500/30">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-icon w-12 h-12 glass-panel-cyan rounded-full flex items-center justify-center text-xl text-white hover:bg-cyan-500 hover:text-black border border-cyan-500/30">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-white rounded-3xl blur-3xl opacity-10"></div>
+                    <div class="glass-panel-cyan p-8 rounded-3xl relative border-cyan-glow">
+                        <div class="flex items-center gap-4 mb-6">
+                            <img src="20260324_043548.png" alt="Logo" class="w-16 h-16 logo-glow rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="logo-fallback w-16 h-16 hidden">B</div>
+                            <h3 class="font-display font-bold text-2xl text-white">SUPPORT THE STREAM</h3>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="p-4 bg-black/40 rounded-xl border border-cyan-500/20 hover:border-cyan-400 transition-colors cursor-pointer group">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-cyan-400">Tier 1 Sub</span>
+                                    <span class="text-2xl font-display font-bold text-white">$4.99</span>
+                                </div>
+                                <p class="text-sm text-gray-400">Ad-free viewing, custom emotes, sub badge</p>
+                            </div>
+                            
+                            <div class="p-4 bg-black/40 rounded-xl border border-white/20 hover:border-white transition-colors cursor-pointer group">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-white">Tier 2 Sub</span>
+                                    <span class="text-2xl font-display font-bold text-white">$9.99</span>
+                                </div>
+                                <p class="text-sm text-gray-400">All Tier 1 perks + priority in games</p>
+                            </div>
+                            
+                            <div class="p-4 bg-black/40 rounded-xl border border-cyan-600/30 hover:border-cyan-500 transition-colors cursor-pointer group">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-cyan-600">Tier 3 Sub</span>
+                                    <span class="text-2xl font-display font-bold text-white">$24.99</span>
+                                </div>
+                                <p class="text-sm text-gray-400">All perks + monthly 1-on-1 stream</p>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full mt-6 py-4 bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-xl font-display font-bold text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all transform hover:scale-[1.02] text-black">
+                            SUBSCRIBE ON TWITCH
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-cyan-900/30 py-12 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center space-x-3">
+                    <img src="20260324_043548.png" alt="BlaZn_TV Logo" class="w-10 h-10 logo-glow" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="logo-fallback w-10 h-10 hidden text-2xl">B</div>
+                    <span class="font-display font-bold text-xl text-white">BLAZN_TV</span>
+                </div>
+                
+                <div class="text-gray-500 text-sm">
+                    © 2026 BlaZn_TV. All rights reserved.
+                </div>
+                
+                <div class="flex gap-6">
+                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">Privacy</a>
+                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">Terms</a>
+                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Particle System
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let particles = [];
+        let animationId;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = Math.random() > 0.5 ? 'rgba(0, 217, 255, ' : 'rgba(255, 255, 255, ';
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            
+            draw() {
+                ctx.fillStyle = this.color + this.opacity + ')';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(100, (canvas.width * canvas.height) / 10000);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            // Connect particles
+            particles.forEach((a, index) => {
+                particles.slice(index + 1).forEach(b => {
+                    const dx = a.x - b.x;
+                    const dy = a.y - b.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        ctx.strokeStyle = `rgba(0, 217, 255, ${0.1 * (1 - distance / 100)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+            
+            animationId = requestAnimationFrame(animateParticles);
+        }
+        
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
+        });
+        
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+        
+        // Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+        
+        const animateCounter = (counter) => {
+            const target = +counter.getAttribute('data-target');
+            const count = +counter.innerText;
+            const inc = target / speed;
+            
+            if (count < target) {
+                counter.innerText = Math.ceil(count + inc);
+                setTimeout(() => animateCounter(counter), 20);
+            } else {
+                counter.innerText = target + '+';
+            }
+        };
+        
+        // Intersection Observer for counters
+        const observerOptions = {
+            threshold: 0.5
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        counters.forEach(counter => observer.observe(counter));
+        
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Smooth Scroll
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Live Status Check (Simulated)
+        function checkLiveStatus() {
+            const isLive = false;
+            const liveStatus = document.getElementById('live-status');
+            
+            if (isLive) {
+                liveStatus.classList.remove('hidden');
+                liveStatus.classList.add('flex');
+            }
+        }
+        
+        checkLiveStatus();
+        
+        // Add cyan glow to active nav links on scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('text-cyan-400');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('text-cyan-400');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
